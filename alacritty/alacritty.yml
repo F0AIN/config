@@ -1,0 +1,92 @@
+window:
+  dynamic_title: true
+  dimensions:
+    columns: 0
+    lines: 0
+  padding:
+    x: 0
+    y: 0
+  decorations: none
+
+scrolling:
+  history: 100000
+
+font:
+  normal:
+    family: CodeNewRoman Nerd Font
+  size: 12.0
+
+colors:
+  primary:
+    background: "#282a36"
+    foreground: "#f8f8f2"
+    bright_foreground: "#ffffff"
+  cursor:
+    text: CellBackground
+    cursor: CellForeground
+  vi_mode_cursor:
+    text: CellBackground
+    cursor: CellForeground
+  search:
+    matches:
+      foreground: "#44475a"
+      background: "#50fa7b"
+    focused_match:
+      foreground: "#44475a"
+      background: "#ffb86c"
+  footer_bar:
+    background: "#282a36"
+    foreground: "#f8f8f2"
+  hints:
+    start:
+      foreground: "#282a36"
+      background: "#f1fa8c"
+    end:
+      foreground: "#f1fa8c"
+      background: "#282a36"
+  line_indicator:
+    foreground: None
+    background: None
+  selection:
+    text: CellForeground
+    background: "#44475a"
+  normal:
+    black: "#21222c"
+    red: "#ff5555"
+    green: "#50fa7b"
+    yellow: "#f1fa8c"
+    blue: "#bd93f9"
+    magenta: "#ff79c6"
+    cyan: "#8be9fd"
+    white: "#f8f8f2"
+  bright:
+    black: "#6272a4"
+    red: "#ff6e6e"
+    green: "#69ff94"
+    yellow: "#ffffa5"
+    blue: "#d6acff"
+    magenta: "#ff92df"
+    cyan: "#a4ffff"
+    white: "#ffffff"
+
+key_bindings:
+  - { key: Left,  chars: "\x1b[D", mode: ~AppCursor }
+  - { key: Left,  chars: "\x1bOD", mode: AppCursor  }
+  - { key: Right, chars: "\x1b[C", mode: ~AppCursor }
+  - { key: Right, chars: "\x1bOC", mode: AppCursor  }
+  - { key: Up,    chars: "\x1b[A", mode: ~AppCursor }
+  - { key: Up,    chars: "\x1bOA", mode: AppCursor  }
+  - { key: Down,  chars: "\x1b[B", mode: ~AppCursor }
+  - { key: Down,  chars: "\x1bOB", mode: AppCursor  }
+  - { key: V, mods: Control|Shift, action: Paste }
+  - { key: C, mods: Control|Shift, action: Copy  }
+
+live_config_reload: true
+
+shell:
+  program: /bin/zsh
+  args:
+    - -l
+    - -c
+    - 'tmux a -t default || tmux new -s default\; source ~/.config/tmux/default.session.conf'
+
