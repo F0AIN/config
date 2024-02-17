@@ -106,30 +106,40 @@ keybinds clear-defaults=true {
         bind "Ctrl b" { Write 2; SwitchToMode "Normal"; }
         bind "Ctrl v" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "Ctrl s" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "Ctrl t" { NewTab; SwitchToMode "Normal"; }
         bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-        bind "c" { NewTab; SwitchToMode "Normal"; }
-        bind "," { SwitchToMode "RenameTab"; }
-        bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
-        bind "n" { GoToNextTab; SwitchToMode "Normal"; }
-        bind "Left" { MoveFocus "Left"; SwitchToMode "Normal"; }
-        bind "Right" { MoveFocus "Right"; SwitchToMode "Normal"; }
-        bind "Down" { MoveFocus "Down"; SwitchToMode "Normal"; }
-        bind "Up" { MoveFocus "Up"; SwitchToMode "Normal"; }
-        bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
-        bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
-        bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
-        bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
+
+        // rename
+        bind "," { SwitchToMode "RenamePane"; }
+        bind "r" { SwitchToMode "RenameTab"; }
+
+        // Move focus
+        bind "p" "Ctrl p" { GoToPreviousTab; SwitchToMode "Normal"; }
+        bind "n" "Ctrl n" { GoToNextTab; SwitchToMode "Normal"; }
+        bind "h" "Left" { MoveFocus "Left"; SwitchToMode "Normal"; }
+        bind "l" "Right" { MoveFocus "Right"; SwitchToMode "Normal"; }
+        bind "j" "Down" { MoveFocus "Down"; SwitchToMode "Normal"; }
+        bind "k" "Up" { MoveFocus "Up"; SwitchToMode "Normal"; }
         bind "o" { FocusNextPane; }
+
+        // Detach
         bind "Ctrl d" { Detach; }
-        bind "Space" { NextSwapLayout; }
         bind "x" { CloseFocus; SwitchToMode "Normal"; }
 
+        // Custon functions
         bind "Ctrl g" {
             Run "lazygit" {
                 floating true
                 close_on_exit true
             };
             SwitchToMode "Normal";
+        }
+        bind "Ctrl w" {
+          LaunchOrFocusPlugin "zellij:session-manager" {
+              floating true
+              move_to_focused_tab true
+          };
+          SwitchToMode "Normal"
         }
     }
     shared_except "locked" {
@@ -152,7 +162,7 @@ keybinds clear-defaults=true {
         bind "Ctrl o" { SwitchToMode "Session"; }
     }
     shared_except "tab" "locked" {
-        bind "Ctrl t" { SwitchToMode "Tab"; }
+        // bind "Ctrl t" { SwitchToMode "Tab"; }
     }
     shared_except "move" "locked" {
         bind "Ctrl h" { SwitchToMode "Move"; }

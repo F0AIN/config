@@ -65,6 +65,9 @@ set hlsearch
 " Set the commands to save in history default number is 20.
 set history=1000
 
+" Clipbard
+set clipboard=unnamed
+
 " PLUGINS ---------------------------------------------------------------- {{{
 
 " Plugin code goes here.
