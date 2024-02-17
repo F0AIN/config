@@ -12,7 +12,7 @@ config.font = wezterm.font_with_fallback({
   -- プログラミング用フォント
   { family = 'Monaspace Xenon' },
   -- 日本語等幅フォント
-  { family = 'PlemolJP Console NF', harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }},
+  { family = 'FirgeNerd Console', harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }},
 })
 
 config.use_fancy_tab_bar = false
