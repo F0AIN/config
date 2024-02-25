@@ -13,8 +13,10 @@ config.font = wezterm.font_with_fallback({
   -- プログラミング用フォント
   { family = 'Monaspace Xenon' },
   -- 日本語等幅フォント
-  { family = 'FirgeNerd Console', harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }},
+  { family = 'FirgeNerd Console' },
 })
+-- リガチャ無効
+config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 -- UI
 config.enable_tab_bar = false
