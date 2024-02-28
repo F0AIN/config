@@ -68,18 +68,6 @@ set history=1000
 " Clipbard
 set clipboard=unnamed
 
-" PLUGINS ---------------------------------------------------------------- {{{
-
-" Plugin code goes here.
-call plug#begin()
-
-Plug 'vim-airline/vim-airline'
-
-call plug#end()
-
-" }}}
-
-
 " MAPPINGS --------------------------------------------------------------- {{{
 
 " Mappings code goes here.
