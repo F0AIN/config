@@ -1,77 +1,35 @@
 { config, pkgs, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "frain";
   home.homeDirectory = "/Users/frain";
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    pkgs.volta
+    pkgs.eza
+    pkgs.ripgrep
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
   home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/frain/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     EDITOR = "vim";
+    LANG = "ja_JP.UTF-8";
+    VOLTA_HOME="$HOME/.volta";
   };
+
+  home.sessionPath = [
+    "$VOLTA_HOME/bin"
+  ];
+
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # vim
   programs.neovim.enable = true;
   programs.vim = {
     enable = true;
@@ -80,5 +38,138 @@
       " .vimrc
       source $HOME/.config/vim/vimrc
     '';
+  };
+
+  # shell
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    syntaxHighlighting.enable = true;
+    defaultKeymap = "emacs";
+
+    # alias
+    shellAliases = {
+      e = "eza --icons --git";
+      l = "e";
+      ls = "e";
+      ea = "eza -a --icons --git";
+      la = "ea";
+      ee = "eza -aahl --icons --git";
+      ll = "ee";
+      et = "eza -T -L 3 -a -I 'node_modules|.git|.cache' --icons";
+      lt = "et";
+      eta = "eza -T -a -I 'node_modules|.git|.cache' --color=always --icons | less -r";
+      lta = "eta";
+    };
+  };
+
+  # starship
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = true;
+
+      format = ''
+        [░▒▓](#9b72b0)[🕹️ ](bg:#9b72b0)[](bg:#ffb86c fg:#9b72b0)$directory[](bg:#ff79c6 fg:#ffb86c)$git_branch$git_commit[](bg:#ff5555 fg:#ff79c6)$git_state$git_metrics$git_status[](fg:#ff5555)
+        $character
+      '';
+
+      right_format = "$all";
+
+      line_break = {
+        disabled = true;
+      };
+
+      directory = {
+        style = "fg:#1d2230 bg:#ffb86c";
+        format = "[$path]($style)";
+        truncation_length = 5;
+        truncation_symbol = "…/";
+        fish_style_pwd_dir_length = 3;
+      };
+
+      # drucla theme
+      aws = {
+        style = "bold #50fa7b";
+      };
+      character = {
+        error_symbol = "[»](bold #ff5555)";
+        success_symbol = "[»](bold #f8f8f2)";
+      };
+      cmd_duration = {
+        style = "bold #f1fa8c";
+      };
+      git_branch = {
+        symbol = "";
+        style = "fg:#1d2230 bg:#ff79c6";
+        format = "[ $symbol $branch ]($style)";
+      };
+      git_status = {
+        style = "bright-white fg:#1d2230 bg:#ff5555";
+        format = "[$all_status$ahead_behind]($style)";
+        conflicted = "⚔️";
+        ahead = "🏎️💨×\${count}";
+        behind = "🐢×\${count}";
+        diverged = "🔱🏎️💨×\${ahead_count} 🐢×\${behind_count}";
+        untracked = "🛤️×\${count}";
+        stashed = "";
+        modified = "×\${count}";
+        staged = "🗃️×\${count}";
+        renamed = "📛×\${count}";
+        deleted = "🗑️×\${count}";
+      };
+      hostname = {
+        style = "bold #bd93f9";
+      };
+      username = {
+        format = "[$user]($style) on ";
+        style_user = "bold #8be9fd";
+      };
+      time = {
+        disabled = false;
+        time_format = "%R";
+        style = "bg:#1d2230";
+        format = "[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)";
+      };
+
+      # Language specific settings 
+      nodejs = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      python = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      ruby = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      rust = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      golang = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      java = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      php = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      package = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      gradle = {
+        format = "[ $symbol($version) ]($style)";
+      };
+      docker_context = {
+        format = "[ $symbol$context ]($style)";
+      };
+    };
+  };
+
+  # skim
+  programs.skim = {
+    enable = true;
+    enableZshIntegration = true;
   };
 }
