@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   home.username = "frain";
@@ -10,7 +10,10 @@
     pkgs.volta
     pkgs.eza
     pkgs.ripgrep
+    pkgs.obsidian
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   home.file = {
   };
@@ -61,6 +64,7 @@
       lt = "et";
       eta = "eza -T -a -I 'node_modules|.git|.cache' --color=always --icons | less -r";
       lta = "eta";
+      cdrepo = "cd `ghq root`/`ghq list | sk`";
     };
   };
 
@@ -68,12 +72,15 @@
   programs.starship = {
     enable = true;
     settings = {
-      add_newline = true;
 
-      format = ''
-        [░▒▓](#9b72b0)[🕹️ ](bg:#9b72b0)[](bg:#ffb86c fg:#9b72b0)$directory[](bg:#ff79c6 fg:#ffb86c)$git_branch$git_commit[](bg:#ff5555 fg:#ff79c6)$git_state$git_metrics$git_status[](fg:#ff5555)
-        $character
-      '';
+      format = lib.concatStrings [
+        "[░▒▓](#9b72b0)[ 🕹️$username$hostname ](bg:#9b72b0)[](bg:#ffb86c fg:#9b72b0)"
+        "$directory[](bg:#ff79c6 fg:#ffb86c)"
+        "$git_branch$git_commit[](bg:#ff5555 fg:#ff79c6)"
+        "$git_state$git_metrics$git_status[](fg:#ff5555)"
+        "\n"
+        "$character"
+      ];
 
       right_format = "$all";
 
@@ -83,7 +90,7 @@
 
       directory = {
         style = "fg:#1d2230 bg:#ffb86c";
-        format = "[$path]($style)";
+        format = "[ $path ]($style)";
         truncation_length = 5;
         truncation_symbol = "…/";
         fish_style_pwd_dir_length = 3;
@@ -107,7 +114,7 @@
       };
       git_status = {
         style = "bright-white fg:#1d2230 bg:#ff5555";
-        format = "[$all_status$ahead_behind]($style)";
+        format = "[ $all_status$ahead_behind ]($style)";
         conflicted = "⚔️";
         ahead = "🏎️💨×\${count}";
         behind = "🐢×\${count}";
