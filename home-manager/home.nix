@@ -11,6 +11,7 @@
     pkgs.eza
     pkgs.ripgrep
     pkgs.obsidian
+    pkgs.fd
   ];
 
   nixpkgs.config.allowUnfree = true;
